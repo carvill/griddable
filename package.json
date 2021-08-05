@@ -1,6 +1,7 @@
 {
   "name": "griddable",
   "version": "0.1.0",
+  "license": "MIT",
   "main": "dist/index",
   "typings": "dist/index",
   "private": false,
