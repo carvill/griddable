@@ -5,7 +5,7 @@ import { GriddableRow, GriddableRowHeader } from './GriddableRow'
 import GriddableColumn from './GriddableColumn'
 import GriddableCell from './GriddableCell'
 
-interface GriddableProps<T> {
+export interface GriddableProps<T> {
     items: T[]
     columns: GriddableColumn<T>[]
     empty?: string
