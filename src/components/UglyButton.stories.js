@@ -1,16 +1,16 @@
 import React from 'react';
 
-import Button from './Button';
+import UglyButton from './UglyButton';
 
 export default {
-    title: ':: Button ::',
-    component: Button,
+    title: ':: UglyButton ::',
+    component: UglyButton,
     argTypes: {
         backgroundColor: { control: 'color' },
     },
 };
 
-const Template = (args) => <Button {...args} />;
+const Template = (args) => <UglyButton {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
@@ -19,6 +19,6 @@ Default.args = {
 
 export const Red = Template.bind({});
 Red.args = {
-    label: "I'm Red",
+    label: 'I am Red',
     backgroundColor: '#ff0000'
 }

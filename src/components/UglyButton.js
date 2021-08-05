@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Button({ label, backgroundColor, onClick }) {
+export default function UglyButton({ label, backgroundColor, onClick }) {
     return (
         <button onClick={onClick}
             style={backgroundColor && { backgroundColor }}>
@@ -10,13 +10,13 @@ export default function Button({ label, backgroundColor, onClick }) {
     );
 }
 
-Button.propTypes = {
+UglyButton.propTypes = {
     backgroundColor: PropTypes.string,
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func,
 };
 
-Button.defaultProps = {
+UglyButton.defaultProps = {
     backgroundColor: null,
     onClick: undefined,
 };

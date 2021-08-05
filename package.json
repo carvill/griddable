@@ -1,12 +1,19 @@
 {
   "name": "griddable",
   "version": "0.1.0",
-  "private": true,
-  "dependencies": {},
-  "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+  "main": "dist/index",
+  "typings": "dist/index",
+  "private": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carvill/griddable"
   },
+  "dependencies": {},
+  "peerDependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.14.8",
     "@babel/preset-env": "^7.15.0",
@@ -18,13 +25,13 @@
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.3.6",
     "cross-env": "^7.0.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-scripts": "4.0.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "clean": "rimraf dist",
+    "compile": "npm run clean && cross-env NODE_ENV=production babel src/components --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,stories.js,__snapshots__",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
