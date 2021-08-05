@@ -1,5 +1,4 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react'
 import UglyButton, { UglyButtonProps } from './UglyButton';
 
 export default {
@@ -8,9 +7,9 @@ export default {
     argTypes: {
         backgroundColor: { control: 'color' },
     },
-} as ComponentMeta<typeof UglyButton>;
+};
 
-const Template: ComponentStory<typeof UglyButton> = (args: UglyButtonProps) => <UglyButton {...args} />;
+const Template = (args: UglyButtonProps) => <UglyButton {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
