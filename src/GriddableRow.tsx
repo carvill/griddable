@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react'
 import { Box, Grid } from '@material-ui/core'
 import { Theme, withStyles } from '@material-ui/core/styles'
 
