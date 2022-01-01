@@ -1,11 +1,11 @@
-import React, { ReactNode, useEffect, useState } from 'react'
-import { Grid, Box, CircularProgress, Typography } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { Grid, CircularProgress, Typography } from '@material-ui/core'
 import clsx from 'clsx'
-import { GriddableRow, GriddableRowHeader } from './GriddableRow'
+import { GriddableRow, GriddableRowHeader, GriddableRowGeneric } from './GriddableRow'
 import GriddableColumn from './GriddableColumn'
 import GriddableCell from './GriddableCell'
 
-export interface GriddableProps<T> {
+interface GriddableProps<T> {
     items: T[]
     columns: GriddableColumn<T>[]
     empty?: string
@@ -64,35 +64,44 @@ function Griddable<T>(props: GriddableProps<T>) {
         )
     }
 
-    useEffect(() => {
+    const handleSelection = () => {
         if (props.selectable && props.onChange) {
             props.onChange(selectedIds, selectedItems)
         }
-        // eslint-disable-next-line
-    }, [props.selectable, selectedIds, selectedItems])
+    };
+
+    useEffect(handleSelection, [props.selectable, selectedIds, selectedItems])
 
     const handleClick = (item: T) => () => {
-        props.onClick!(item)
+        if (props.onClick) {
+            props.onClick!(item)
+        }
     }
 
     const gridableBody = (): any => {
         if (props.loading) {
-            return genericRow(
-                <CircularProgress size="1rem" color="secondary" />
+            return (
+                <GriddableRowGeneric>
+                    <CircularProgress size="1rem" color="secondary" />
+                </GriddableRowGeneric>
             )
         }
 
         if (props.error) {
-            return genericRow(
-                <Typography variant="caption" color="error">
-                    {props.error}
-                </Typography>
+            return (
+                <GriddableRowGeneric>
+                    <Typography variant="caption" color="error">
+                        {props.error}
+                    </Typography>
+                </GriddableRowGeneric>
             )
         }
 
         if (props.items.length === 0 && props.empty) {
-            return genericRow(
-                <Typography variant="caption">{props.empty}</Typography>
+            return (
+                <GriddableRowGeneric>
+                    <Typography variant="caption">{props.empty}</Typography>
+                </GriddableRowGeneric>
             )
         }
 
@@ -131,18 +140,6 @@ function Griddable<T>(props: GriddableProps<T>) {
                         )}
                     </GriddableRow>
                 ))}
-            </Grid>
-        )
-    }
-
-    const genericRow = (child: ReactNode) => {
-        return (
-            <Grid item xs={12}>
-                <GriddableRow container justifyContent="center">
-                    <Grid item xs="auto">
-                        <Box py={1}>{child}</Box>
-                    </Grid>
-                </GriddableRow>
             </Grid>
         )
     }

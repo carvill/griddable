@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { PropTypes } from '@material-ui/core'
 
-export type columns =
+type columns =
     | boolean
     | 1
     | 2
@@ -16,7 +16,6 @@ export type columns =
     | 11
     | 12
     | 'auto'
-    | undefined
 
 interface GriddableColumn<T> {
     title: string | ReactNode
