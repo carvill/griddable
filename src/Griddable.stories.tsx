@@ -85,7 +85,7 @@ Default.args = {
             title: 'Precio',
             converter: (item) => item.price,
             textAlign: 'right',
-            xs: 2,
+            xs: 1,
         },
         {
             title: 'Unidades',
@@ -94,14 +94,16 @@ Default.args = {
             xs: 2,
         },
         {
-            title: 'Status',
+            title: 'Estatus',
             converter: (item) => item.status,
             xs: 1,
         },
     ] as GriddableColumn<Item>[],
     loading: false,
     selectable: true,
+    expandable: true,
     mapper: (item: Item) => item.id,
+    detailMapper: (item: Item) => <span>Detail: {item.name}</span>,
     onChange: (ids: string[], items: Item[]) => console.log(ids),
     onClick: (item: Item) => {
         console.log('here', item)

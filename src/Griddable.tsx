@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { Grid, CircularProgress, Typography } from '@material-ui/core'
-import clsx from 'clsx'
-import {
-    GriddableRow,
-    GriddableRowHeader,
-    GriddableRowGeneric,
-} from './GriddableRow'
+import GriddableRowHeader from './GriddableRowHeader'
+import GriddableRowGeneric from './GriddableRowGeneric'
 import GriddableColumn from './GriddableColumn'
 import GriddableCell from './GriddableCell'
+import GriddableRowBody from './GriddableRowBody'
 
 interface GriddableProps<T> {
     items: T[]
@@ -16,15 +13,17 @@ interface GriddableProps<T> {
     empty?: string
     error?: string
     selectable?: boolean
+    expandable?: boolean
     onChange?(ids: string[], items: T[]): any
     onClick?(item: T): any
     mapper?(item: T): string
+    detailMapper?(item: T): ReactNode
 }
 
 function Griddable<T>(props: GriddableProps<T>) {
     const [selectedIds, setSelectedIds] = useState<string[]>([])
     const [selectedItems, setSelectedItems] = useState<T[]>([])
-    const { selectable, onChange, mapper } = props
+    const { selectable, onChange, onClick, mapper } = props
 
     const onLocalChange = (item: T): any => {
         const id = mapper!(item)
@@ -61,23 +60,11 @@ function Griddable<T>(props: GriddableProps<T>) {
         setSelectedItems(items)
     }
 
-    const isSelected = (item: T): boolean => {
-        return (
-            !!selectable && !!mapper && selectedIds.indexOf(mapper!(item)) >= 0
-        )
-    }
-
     useEffect(() => {
         if (selectable && onChange) {
             onChange(selectedIds, selectedItems)
         }
     }, [selectable, onChange, selectedIds, selectedItems])
-
-    const handleClick = (item: T) => () => {
-        if (props.onClick) {
-            props.onClick!(item)
-        }
-    }
 
     const gridableBody = (): any => {
         if (props.loading) {
@@ -109,35 +96,20 @@ function Griddable<T>(props: GriddableProps<T>) {
         return (
             <Grid item xs={12}>
                 {props.items.map((item: T, indexRow: number) => (
-                    <GriddableRow
+                    <GriddableRowBody
                         key={indexRow}
-                        container
-                        onClick={props.onClick ? handleClick(item) : undefined}
-                        className={clsx({
-                            GriddableRowClickable: !!props.onClick,
-                            GriddableRowSelected: isSelected(item),
-                        })}
-                    >
-                        {props.columns.map(
-                            (
-                                column: GriddableColumn<T>,
-                                indexColumn: number
-                            ) => (
-                                <GriddableCell
-                                    key={indexColumn}
-                                    column={column}
-                                    item={item}
-                                    index={indexColumn}
-                                    selectable={selectable && indexColumn === 0}
-                                    mapper={mapper}
-                                    total={props.items.length}
-                                    selected={selectedIds}
-                                    onChange={onLocalChange}
-                                    onChangeAll={onLocalChangeAll}
-                                />
-                            )
-                        )}
-                    </GriddableRow>
+                        item={item}
+                        total={props.items.length}
+                        selectable={props.selectable}
+                        expandable={props.expandable}
+                        columns={props.columns}
+                        selectedIds={selectedIds}
+                        onLocalChange={onLocalChange}
+                        onLocalChangeAll={onLocalChangeAll}
+                        onClick={onClick}
+                        mapper={mapper}
+                        detailMapper={props.detailMapper}
+                    />
                 ))}
             </Grid>
         )
