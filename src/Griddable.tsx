@@ -13,6 +13,8 @@ interface GriddableProps<T> {
     empty?: string
     error?: string
     selectable?: boolean
+    selected?: string[]
+    fixed?: string[]
     expandable?: boolean
     onChange?(ids: string[], items: T[]): any
     onClick?(item: T): any
@@ -21,7 +23,8 @@ interface GriddableProps<T> {
 }
 
 function Griddable<T>(props: GriddableProps<T>) {
-    const [selectedIds, setSelectedIds] = useState<string[]>([])
+    const [selectedIds, setSelectedIds] = useState<string[]>(props.selected || [])
+    const [fixedIds] = useState<string[]>(props.fixed || [])
     const [selectedItems, setSelectedItems] = useState<T[]>([])
     const { selectable, onChange, onClick, mapper } = props
 
@@ -52,8 +55,8 @@ function Griddable<T>(props: GriddableProps<T>) {
             ids = props.items.map((item) => mapper!(item))
             items = props.items
         } else {
-            ids = []
-            items = []
+            ids = fixedIds
+            items = props.items.filter(item => fixedIds.indexOf(mapper!(item)) >= 0)
         }
 
         setSelectedIds(ids)
@@ -101,6 +104,7 @@ function Griddable<T>(props: GriddableProps<T>) {
                         item={item}
                         total={props.items.length}
                         selectable={props.selectable}
+                        fixedIds={fixedIds}
                         expandable={props.expandable}
                         columns={props.columns}
                         selectedIds={selectedIds}

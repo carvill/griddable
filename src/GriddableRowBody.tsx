@@ -13,6 +13,7 @@ interface GriddableRowBodyProps<T> {
     expandable?: boolean
     columns: GriddableColumn<T>[]
     selectedIds: string[]
+    fixedIds?: string[]
     onLocalChange(item: T): any
     onLocalChangeAll(checked: boolean): any
     onClick?(item: T): any
@@ -21,7 +22,7 @@ interface GriddableRowBodyProps<T> {
 }
 
 function GriddableRowBody<T>(props: GriddableRowBodyProps<T>) {
-    const { item, selectable, selectedIds, onClick, mapper } = props
+    const { item, selectable, selectedIds, fixedIds, onClick, mapper } = props
     const [expanded, setExpanded] = useState(false)
     const [selected, setSelected] = useState(false)
     const [clickable, setClickable] = useState(false)
@@ -70,6 +71,7 @@ function GriddableRowBody<T>(props: GriddableRowBodyProps<T>) {
                             item={item}
                             index={indexColumn}
                             selectable={selectable && indexColumn === 0}
+                            fixedIds={fixedIds}
                             expandable={props.expandable && indexColumn === 0}
                             expanded={expanded}
                             mapper={mapper}

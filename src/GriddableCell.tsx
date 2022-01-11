@@ -26,6 +26,7 @@ interface GriddableCellProps<T> {
     total: number
     selected: string[]
     selectable?: boolean
+    fixedIds?: string[]
     expandable?: boolean
     expanded?: boolean
     mapper?(item: T): string

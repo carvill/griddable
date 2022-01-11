@@ -101,11 +101,13 @@ Default.args = {
     ] as GriddableColumn<Item>[],
     loading: false,
     selectable: true,
-    expandable: true,
+    selected: ['1', '2'],
+    fixed: ['1'],
     mapper: (item: Item) => item.id,
-    detailMapper: (item: Item) => <span>Detail: {item.name}</span>,
     onChange: (ids: string[], items: Item[]) => console.log(ids),
     onClick: (item: Item) => {
         console.log('here', item)
     },
+    expandable: false,
+    detailMapper: (item: Item) => <span>Detail: {item.name}</span>,
 }

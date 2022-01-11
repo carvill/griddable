@@ -11,6 +11,7 @@ interface GriddableCellValueProps<T> {
     index: number
     selected: string[]
     selectable?: boolean
+    fixedIds?: string[]
     expandable?: boolean
     expanded?: boolean
     mapper?(item: T): string
@@ -19,11 +20,12 @@ interface GriddableCellValueProps<T> {
 }
 
 function GriddableCellValue<T>(props: GriddableCellValueProps<T>) {
-    const { column, item, index, selected, mapper } = props
+    const { column, item, index, selected, mapper, fixedIds } = props
     const { title, textAlign, converter } = column
 
     const [id, setId] = useState('')
     const [checked, setChecked] = useState(false)
+    const [disabled, setDisabled] = useState(false)
     const [valueNode, setValueNode] = useState<ReactNode>()
 
     useEffect(() => {
@@ -31,11 +33,12 @@ function GriddableCellValue<T>(props: GriddableCellValueProps<T>) {
             const id = mapper(item)
             setId(id)
             setChecked(selected.indexOf(id) >= 0)
+            setDisabled(fixedIds ? fixedIds?.indexOf(id) >= 0 : false)
         } else {
             setId('')
             setChecked(false)
         }
-    }, [item, selected, mapper])
+    }, [item, selected, fixedIds, mapper])
 
     useEffect(() => {
         const value = converter(item, index)
@@ -71,6 +74,7 @@ function GriddableCellValue<T>(props: GriddableCellValueProps<T>) {
                         name={id}
                         value={id}
                         checked={checked}
+                        disabled={disabled}
                         onChange={handleSelection}
                         onClick={(event) => event.stopPropagation()}
                     />
