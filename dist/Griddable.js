@@ -11,11 +11,13 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _core = require("@material-ui/core");
 
-var _clsx = _interopRequireDefault(require("clsx"));
+var _GriddableRowHeader = _interopRequireDefault(require("./GriddableRowHeader"));
 
-var _GriddableRow = require("./GriddableRow");
+var _GriddableRowGeneric = _interopRequireDefault(require("./GriddableRowGeneric"));
 
 var _GriddableCell = _interopRequireDefault(require("./GriddableCell"));
+
+var _GriddableRowBody = _interopRequireDefault(require("./GriddableRowBody"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32,8 +34,13 @@ function Griddable(props) {
       selectedItems = _b[0],
       setSelectedItems = _b[1];
 
-  var onChange = function onChange(item) {
-    var id = props.mapper(item);
+  var selectable = props.selectable,
+      onChange = props.onChange,
+      onClick = props.onClick,
+      mapper = props.mapper;
+
+  var onLocalChange = function onLocalChange(item) {
+    var id = mapper(item);
     var ids = selectedIds.length === 0 ? [] : selectedIds.join(',').split(',');
     var items = selectedItems.map(function (item) {
       return item;
@@ -52,12 +59,12 @@ function Griddable(props) {
     setSelectedItems(items);
   };
 
-  var onChangeAll = function onChangeAll(checked) {
+  var onLocalChangeAll = function onLocalChangeAll(checked) {
     var ids, items;
 
     if (checked) {
       ids = props.items.map(function (item) {
-        return props.mapper(item);
+        return mapper(item);
       });
       items = props.items;
     } else {
@@ -69,40 +76,29 @@ function Griddable(props) {
     setSelectedItems(items);
   };
 
-  var isSelected = function isSelected(item) {
-    return !!props.selectable && !!props.mapper && selectedIds.indexOf(props.mapper(item)) >= 0;
-  };
-
   (0, _react.useEffect)(function () {
-    if (props.selectable && props.onChange) {
-      props.onChange(selectedIds, selectedItems);
-    } // eslint-disable-next-line
-
-  }, [props.selectable, selectedIds, selectedItems]);
-
-  var handleClick = function handleClick(item) {
-    return function () {
-      props.onClick(item);
-    };
-  };
+    if (selectable && onChange) {
+      onChange(selectedIds, selectedItems);
+    }
+  }, [selectable, onChange, selectedIds, selectedItems]);
 
   var gridableBody = function gridableBody() {
     if (props.loading) {
-      return genericRow( /*#__PURE__*/_react.default.createElement(_core.CircularProgress, {
+      return /*#__PURE__*/_react.default.createElement(_GriddableRowGeneric.default, null, /*#__PURE__*/_react.default.createElement(_core.CircularProgress, {
         size: "1rem",
         color: "secondary"
       }));
     }
 
     if (props.error) {
-      return genericRow( /*#__PURE__*/_react.default.createElement(_core.Typography, {
+      return /*#__PURE__*/_react.default.createElement(_GriddableRowGeneric.default, null, /*#__PURE__*/_react.default.createElement(_core.Typography, {
         variant: "caption",
         color: "error"
       }, props.error));
     }
 
     if (props.items.length === 0 && props.empty) {
-      return genericRow( /*#__PURE__*/_react.default.createElement(_core.Typography, {
+      return /*#__PURE__*/_react.default.createElement(_GriddableRowGeneric.default, null, /*#__PURE__*/_react.default.createElement(_core.Typography, {
         variant: "caption"
       }, props.empty));
     }
@@ -111,44 +107,21 @@ function Griddable(props) {
       item: true,
       xs: 12
     }, props.items.map(function (item, indexRow) {
-      return /*#__PURE__*/_react.default.createElement(_GriddableRow.GriddableRow, {
+      return /*#__PURE__*/_react.default.createElement(_GriddableRowBody.default, {
         key: indexRow,
-        container: true,
-        onClick: props.onClick ? handleClick(item) : undefined,
-        className: (0, _clsx.default)({
-          GriddableRowClickable: !!props.onClick,
-          GriddableRowSelected: isSelected(item)
-        })
-      }, props.columns.map(function (column, indexColumn) {
-        return /*#__PURE__*/_react.default.createElement(_GriddableCell.default, {
-          key: indexColumn,
-          column: column,
-          item: item,
-          index: indexColumn,
-          selectable: props.selectable && indexColumn === 0,
-          mapper: props.mapper,
-          total: props.items.length,
-          selected: selectedIds,
-          onChange: onChange,
-          onChangeAll: onChangeAll
-        });
-      }));
+        item: item,
+        total: props.items.length,
+        selectable: props.selectable,
+        expandable: props.expandable,
+        columns: props.columns,
+        selectedIds: selectedIds,
+        onLocalChange: onLocalChange,
+        onLocalChangeAll: onLocalChangeAll,
+        onClick: onClick,
+        mapper: mapper,
+        detailMapper: props.detailMapper
+      });
     }));
-  };
-
-  var genericRow = function genericRow(child) {
-    return /*#__PURE__*/_react.default.createElement(_core.Grid, {
-      item: true,
-      xs: 12
-    }, /*#__PURE__*/_react.default.createElement(_GriddableRow.GriddableRow, {
-      container: true,
-      justifyContent: "center"
-    }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
-      item: true,
-      xs: "auto"
-    }, /*#__PURE__*/_react.default.createElement(_core.Box, {
-      py: 1
-    }, child))));
   };
 
   return /*#__PURE__*/_react.default.createElement(_core.Grid, {
@@ -156,19 +129,19 @@ function Griddable(props) {
   }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
     item: true,
     xs: 12
-  }, /*#__PURE__*/_react.default.createElement(_GriddableRow.GriddableRowHeader, {
+  }, /*#__PURE__*/_react.default.createElement(_GriddableRowHeader.default, {
     container: true
   }, props.columns.map(function (column, index) {
     return /*#__PURE__*/_react.default.createElement(_GriddableCell.default, {
       key: index,
       column: column,
       index: index,
-      selectable: props.selectable && index === 0,
-      mapper: props.mapper,
+      selectable: selectable && index === 0,
+      mapper: mapper,
       total: props.items.length,
       selected: selectedIds,
-      onChange: onChange,
-      onChangeAll: onChangeAll
+      onChange: onLocalChange,
+      onChangeAll: onLocalChangeAll
     });
   }))), /*#__PURE__*/_react.default.createElement(_core.Grid, {
     item: true,

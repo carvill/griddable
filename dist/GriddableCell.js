@@ -11,14 +11,34 @@ var _core = require("@material-ui/core");
 
 var _styles = require("@material-ui/core/styles");
 
+var _GriddableCellTitle = _interopRequireDefault(require("./GriddableCellTitle"));
+
+var _GriddableCellValue = _interopRequireDefault(require("./GriddableCellValue"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __assign = void 0 && (void 0).__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
 
 var GriddableCellBox = (0, _styles.withStyles)(function (theme) {
   return {
     root: {
       width: '100%',
-      minHeight: '100%',
       minWidth: '100%',
+      minHeight: theme.spacing(5),
       paddingLeft: theme.spacing(1.5),
       paddingRight: theme.spacing(1.5),
       display: 'flex',
@@ -28,126 +48,26 @@ var GriddableCellBox = (0, _styles.withStyles)(function (theme) {
     }
   };
 })(_core.Box);
-var GriddableCheckbox = (0, _styles.withStyles)(function (theme) {
-  return {
-    root: {
-      paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1),
-      zIndex: 1
-    }
-  };
-})(_core.Checkbox);
 
 function GriddableCell(props) {
-  var handleAllCheckboxs = function handleAllCheckboxs(event, checked) {
-    props.onChangeAll(checked);
-  };
-
-  var handleSelection = function handleSelection(event) {
-    props.onChange(props.item);
-  };
-
-  var convert = function convert(item, index) {
-    var value = props.column.converter(item, props.index);
-
-    if (props.column.textAlign && (typeof value === 'string' || typeof value === 'number')) {
-      return /*#__PURE__*/_react.default.createElement(_core.Typography, {
-        variant: "body2",
-        component: "h6",
-        align: props.column.textAlign
-      }, value);
-    }
-
-    return value;
-  };
-
-  var value = function value(item) {
-    var id = props.mapper ? props.mapper(item) : '';
-    return /*#__PURE__*/_react.default.createElement(_core.Grid, {
-      container: true,
-      justifyContent: "flex-start",
-      alignItems: "center",
-      alignContent: "center",
-      spacing: 1
-    }, props.selectable && /*#__PURE__*/_react.default.createElement(_core.Grid, {
-      item: true,
-      xs: "auto"
-    }, /*#__PURE__*/_react.default.createElement(GriddableCheckbox, {
-      id: id,
-      name: id,
-      value: id,
-      checked: props.selected.indexOf(id) >= 0,
-      onChange: handleSelection,
-      onClick: function onClick(event) {
-        return event.stopPropagation();
-      }
-    })), /*#__PURE__*/_react.default.createElement(_core.Grid, {
-      item: true,
-      xs: true
-    }, convert(item, props.index)));
-  };
-
-  var titleValue = function titleValue() {
-    if (typeof props.column.title !== 'string') {
-      return props.column.title;
-    }
-
-    if (props.column.textAlign) {
-      return /*#__PURE__*/_react.default.createElement(_core.Typography, {
-        variant: "body2",
-        component: "h6",
-        align: props.column.textAlign
-      }, /*#__PURE__*/_react.default.createElement("strong", null, props.column.title));
-    }
-
-    return /*#__PURE__*/_react.default.createElement("strong", null, props.column.title);
-  };
-
-  var title = function title() {
-    return /*#__PURE__*/_react.default.createElement(_core.Grid, {
-      container: true,
-      justifyContent: "flex-start",
-      alignItems: "center",
-      alignContent: "center",
-      spacing: 1
-    }, props.selectable && /*#__PURE__*/_react.default.createElement(_core.Grid, {
-      item: true,
-      xs: "auto"
-    }, /*#__PURE__*/_react.default.createElement(GriddableCheckbox, {
-      id: "gridable-all",
-      name: "gridable-all",
-      checked: props.selected.length > 0 && props.selected.length === props.total,
-      indeterminate: props.selected.length > 0 && props.selected.length < props.total,
-      onChange: handleAllCheckboxs,
-      disabled: props.total === 0
-    })), /*#__PURE__*/_react.default.createElement(_core.Grid, {
-      item: true,
-      xs: true
-    }, titleValue()));
-  };
-
-  var content = function content() {
-    if (props.item) {
-      return value(props.item);
-    }
-
-    return title();
-  };
-
+  var item = props.item,
+      column = props.column;
   return /*#__PURE__*/_react.default.createElement(_core.Hidden, {
-    xsDown: props.column.xs === false,
-    smDown: props.column.sm === false,
-    mdDown: props.column.md === false,
-    lgDown: props.column.lg === false,
-    xlDown: props.column.xl === false
+    xsDown: column.xs === false,
+    smDown: column.sm === false,
+    mdDown: column.md === false,
+    lgDown: column.lg === false,
+    xlDown: column.xl === false
   }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
     item: true,
-    xs: props.column.xs,
-    sm: props.column.sm,
-    md: props.column.md,
-    lg: props.column.lg,
-    xl: props.column.xl
-  }, /*#__PURE__*/_react.default.createElement(GriddableCellBox, null, content())));
+    xs: column.xs,
+    sm: column.sm,
+    md: column.md,
+    lg: column.lg,
+    xl: column.xl
+  }, /*#__PURE__*/_react.default.createElement(GriddableCellBox, null, item && /*#__PURE__*/_react.default.createElement(_GriddableCellValue.default, __assign({
+    item: item
+  }, props)), !item && /*#__PURE__*/_react.default.createElement(_GriddableCellTitle.default, __assign({}, props)))));
 }
 
 var _default = GriddableCell;
