@@ -14,16 +14,16 @@ const GriddableDetailContainer = withStyles((theme: Theme) => ({
 interface GriddableRowDetailProps<T> {
     item: T
     expanded: boolean
-    detailMapper(item: T): ReactNode
+    mapper(item: T): ReactNode
 }
 
 function GriddableRowDetail<T>(props: GriddableRowDetailProps<T>) {
-    const { item, expanded, detailMapper } = props
+    const { item, expanded, mapper } = props
 
     return (
         <Hidden xsUp={!expanded} implementation="js">
             <GriddableDetailContainer item xs={12}>
-                <Collapse in={expanded}>{detailMapper(item)}</Collapse>
+                <Collapse in={expanded}>{mapper(item)}</Collapse>
             </GriddableDetailContainer>
         </Hidden>
     )

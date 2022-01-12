@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import { Grid, Typography } from '@material-ui/core'
 import GriddableCheckbox from './GriddableCheckbox'
 import GriddableColumn from './GriddableColumn'
+import GriddableCell from './GriddableCell'
 
 interface GriddableCellTitleProps<T> {
     column: GriddableColumn<T>
@@ -48,30 +49,32 @@ function GriddableCellTitle<T>(props: GriddableCellTitleProps<T>) {
     }
 
     return (
-        <Grid
-            container
-            justifyContent="flex-start"
-            alignItems="center"
-            alignContent="center"
-            spacing={1}
-        >
-            {selectable && (
-                <Grid item xs="auto">
-                    <GriddableCheckbox
-                        size="small"
-                        id="gridable-all"
-                        name="gridable-all"
-                        checked={checked}
-                        indeterminate={indeterminate}
-                        onChange={handleAllCheckboxs}
-                        disabled={disabled}
-                    />
+        <GriddableCell column={column}>
+            <Grid
+                container
+                justifyContent="flex-start"
+                alignItems="center"
+                alignContent="center"
+                spacing={1}
+            >
+                {selectable && (
+                    <Grid item xs="auto">
+                        <GriddableCheckbox
+                            size="small"
+                            id="gridable-all"
+                            name="gridable-all"
+                            checked={checked}
+                            indeterminate={indeterminate}
+                            onChange={handleAllCheckboxs}
+                            disabled={disabled}
+                        />
+                    </Grid>
+                )}
+                <Grid item xs>
+                    {titleNode}
                 </Grid>
-            )}
-            <Grid item xs>
-                {titleNode}
             </Grid>
-        </Grid>
+        </GriddableCell>
     )
 }
 

@@ -1,9 +1,7 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Grid, Box, Hidden } from '@material-ui/core'
 import { Theme, withStyles } from '@material-ui/core/styles'
 import GriddableColumn from './GriddableColumn'
-import GriddableCellTitle from './GriddableCellTitle'
-import GriddableCellValue from './GriddableCellValue'
 
 const GriddableCellBox = withStyles((theme: Theme) => ({
     root: {
@@ -21,23 +19,11 @@ const GriddableCellBox = withStyles((theme: Theme) => ({
 
 interface GriddableCellProps<T> {
     column: GriddableColumn<T>
-    item?: T
-    index: number
-    total: number
-    selected: string[]
-    selectable?: boolean
-    fixedIds?: string[]
-    expandable?: boolean
-    expanded?: boolean
-    mapper?(item: T): string
-    onChange(item: T): any
-    onChangeAll(checked: boolean): any
-    onExpand?(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): any
+    children: ReactNode
 }
 
 function GriddableCell<T>(props: GriddableCellProps<T>) {
-    const { item, column } = props
-
+    const { column, children } = props
     return (
         <Hidden
             xsDown={column.xs === false}
@@ -54,10 +40,7 @@ function GriddableCell<T>(props: GriddableCellProps<T>) {
                 lg={column.lg}
                 xl={column.xl}
             >
-                <GriddableCellBox>
-                    {item && <GriddableCellValue item={item} {...props} />}
-                    {!item && <GriddableCellTitle {...props} />}
-                </GriddableCellBox>
+                <GriddableCellBox>{children}</GriddableCellBox>
             </Grid>
         </Hidden>
     )

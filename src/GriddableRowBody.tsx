@@ -1,50 +1,55 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
 
-import GriddableCell from './GriddableCell'
 import GriddableRowDetail from './GriddableRowDetail'
 import GriddableColumn from './GriddableColumn'
 import GriddableRow from './GriddableRow'
+import GriddableExpandable from './GriddableExpandable'
+import GriddableClickable from './GriddableClickable'
+import GriddableCellValue from './GriddableCellValue'
 
 interface GriddableRowBodyProps<T> {
     item: T
     total: number
     selectable?: boolean
-    expandable?: boolean
     columns: GriddableColumn<T>[]
     selectedIds: string[]
     fixedIds?: string[]
     onLocalChange(item: T): any
     onLocalChangeAll(checked: boolean): any
-    onClick?(item: T): any
     mapper?(item: T): string
-    detailMapper?(item: T): ReactNode
+    clickable?: GriddableClickable<T>
+    expandable?: GriddableExpandable<T>
 }
 
 function GriddableRowBody<T>(props: GriddableRowBodyProps<T>) {
-    const { item, selectable, selectedIds, fixedIds, onClick, mapper } = props
+    const {
+        item,
+        selectable,
+        clickable,
+        expandable,
+        selectedIds,
+        fixedIds,
+        mapper,
+    } = props
+
+    const [id, setId] = useState('')
     const [expanded, setExpanded] = useState(false)
     const [selected, setSelected] = useState(false)
-    const [clickable, setClickable] = useState(false)
+    const [disabled, setDisabled] = useState(false)
 
     useEffect(() => {
         if (selectable && mapper) {
             const id = mapper(item)
+            setId(id)
             setSelected(selectedIds.indexOf(id) >= 0)
+            setDisabled(fixedIds ? fixedIds.indexOf(id) >= 0 : false)
         } else {
+            setId('')
             setSelected(false)
+            setDisabled(false)
         }
-    }, [item, selectable, selectedIds, mapper])
-
-    useEffect(() => {
-        setClickable(!!onClick)
-    }, [onClick])
-
-    const handleClick = () => {
-        if (onClick) {
-            onClick(item)
-        }
-    }
+    }, [item, selectable, selectedIds, fixedIds, mapper])
 
     const onExpand = (
         event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -56,7 +61,7 @@ function GriddableRowBody<T>(props: GriddableRowBodyProps<T>) {
     return (
         <GriddableRow
             container
-            onClick={clickable ? handleClick : undefined}
+            onClick={() => clickable?.onClick(item)}
             className={clsx({
                 GriddableRowClickable: clickable,
                 GriddableRowSelected: selected,
@@ -65,29 +70,27 @@ function GriddableRowBody<T>(props: GriddableRowBodyProps<T>) {
             <>
                 {props.columns.map(
                     (column: GriddableColumn<T>, indexColumn: number) => (
-                        <GriddableCell
+                        <GriddableCellValue
                             key={indexColumn}
+                            id={id}
                             column={column}
                             item={item}
                             index={indexColumn}
+                            selected={selected}
                             selectable={selectable && indexColumn === 0}
-                            fixedIds={fixedIds}
+                            disabled={disabled}
+                            onChange={props.onLocalChange}
                             expandable={props.expandable && indexColumn === 0}
                             expanded={expanded}
-                            mapper={mapper}
-                            total={props.total}
-                            selected={selectedIds}
-                            onChange={props.onLocalChange}
-                            onChangeAll={props.onLocalChangeAll}
                             onExpand={onExpand}
                         />
                     )
                 )}
-                {props.expandable && props.detailMapper && (
+                {expandable?.mapper && (
                     <GriddableRowDetail
-                        expanded={expanded}
                         item={item}
-                        detailMapper={props.detailMapper}
+                        expanded={expanded}
+                        mapper={expandable.mapper}
                     />
                 )}
             </>

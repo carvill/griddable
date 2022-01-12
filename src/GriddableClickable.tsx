@@ -1,3 +1,3 @@
 export default interface GriddableClickable<T> {
-    onClick?(item: T): any
+    onClick(item: T): any
 }

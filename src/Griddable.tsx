@@ -1,17 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react'
-import {
-    Grid,
-    CircularProgress,
-    Typography,
-} from '@material-ui/core'
+import { Grid, CircularProgress, Typography } from '@material-ui/core'
 import GriddableRowHeader from './GriddableRowHeader'
 import GriddableRowGeneric from './GriddableRowGeneric'
 import GriddableColumn from './GriddableColumn'
-import GriddableCell from './GriddableCell'
 import GriddableRowBody from './GriddableRowBody'
 import GriddableSelectable from './GriddableSelectable'
 import GriddableExpandable from './GriddableExpandable'
 import GriddableClickable from './GriddableClickable'
+import GriddableCellTitle from './GriddableCellTitle'
 
 interface GriddableProps<T> {
     items: T[]
@@ -96,13 +92,12 @@ function Griddable<T>(props: GriddableProps<T>) {
                         columns={props.columns}
                         onLocalChange={onLocalChange}
                         onLocalChangeAll={onLocalChangeAll}
-                        onClick={clickable?.onClick}
                         selectedIds={selectedIds}
                         fixedIds={fixedIds.current}
                         selectable={!!selectable}
                         mapper={selectable?.mapper}
-                        expandable={!!expandable}
-                        detailMapper={expandable?.mapper}
+                        clickable={clickable}
+                        expandable={expandable}
                     />
                 ))}
             </Grid>
@@ -115,15 +110,12 @@ function Griddable<T>(props: GriddableProps<T>) {
                 <GriddableRowHeader container>
                     {props.columns.map(
                         (column: GriddableColumn<T>, index: number) => (
-                            <GriddableCell
+                            <GriddableCellTitle
                                 key={index}
                                 column={column}
-                                index={index}
                                 selectable={selectable && index === 0}
-                                mapper={selectable?.mapper}
                                 total={items.length}
                                 selected={selectedIds}
-                                onChange={onLocalChange}
                                 onChangeAll={onLocalChangeAll}
                             />
                         )
