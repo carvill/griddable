@@ -9,6 +9,7 @@ interface GriddableCellTitleProps<T> {
     total: number
     selected: string[]
     selectable?: boolean
+    disabled?: boolean
     onChangeAll(checked: boolean): any
 }
 
@@ -24,8 +25,8 @@ function GriddableCellTitle<T>(props: GriddableCellTitleProps<T>) {
     useEffect(() => {
         setChecked(selected.length > 0 && selected.length === total)
         setIndeterminate(selected.length > 0 && selected.length < total)
-        setDisabled(total === 0)
-    }, [total, selected])
+        setDisabled(props.disabled || total === 0)
+    }, [total, selected, props.disabled])
 
     useEffect(() => {
         if (typeof title !== 'string') {

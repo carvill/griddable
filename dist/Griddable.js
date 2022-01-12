@@ -44,6 +44,10 @@ function Griddable(props) {
       selectedIds = _a[0],
       setSelectedIds = _a[1];
 
+  var _b = (0, _react.useState)(false),
+      disableAll = _b[0],
+      setDisableAll = _b[1];
+
   var onLocalChange = function onLocalChange(item) {
     var id = selectable.mapper(item);
     var index = selectedIds.indexOf(id);
@@ -68,9 +72,21 @@ function Griddable(props) {
   };
 
   (0, _react.useEffect)(function () {
+    if (selectable) {
+      var ids = items.map(selectable.mapper);
+      var notFixed = ids.filter(function (el) {
+        return fixedIds.current.indexOf(el) < 0;
+      });
+      setDisableAll(notFixed.length === 0);
+      setSelectedIds(selectable.selected || []);
+    } else {
+      setSelectedIds([]);
+    }
+  }, [selectable, items]);
+  (0, _react.useEffect)(function () {
     if (!selectable) return;
     var selectedItems = items.filter(function (el) {
-      return selectedIds.indexOf(selectable.mapper(el));
+      return selectedIds.indexOf(selectable.mapper(el)) >= 0;
     });
     selectable.onChange(selectedIds, selectedItems);
   }, [selectable, items, selectedIds]);
@@ -123,12 +139,14 @@ function Griddable(props) {
     item: true,
     xs: 12
   }, /*#__PURE__*/_react.default.createElement(_GriddableRowHeader.default, {
+    className: "GridableHeader",
     container: true
   }, props.columns.map(function (column, index) {
     return /*#__PURE__*/_react.default.createElement(_GriddableCellTitle.default, {
       key: index,
       column: column,
       selectable: selectable && index === 0,
+      disabled: disableAll,
       total: items.length,
       selected: selectedIds,
       onChangeAll: onLocalChangeAll

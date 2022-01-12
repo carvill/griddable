@@ -5,6 +5,7 @@ interface GriddableCellTitleProps<T> {
     total: number;
     selected: string[];
     selectable?: boolean;
+    disabled?: boolean;
     onChangeAll(checked: boolean): any;
 }
 declare function GriddableCellTitle<T>(props: GriddableCellTitleProps<T>): JSX.Element;

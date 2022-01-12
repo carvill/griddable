@@ -27,6 +27,7 @@ function Griddable<T>(props: GriddableProps<T>) {
     const [selectedIds, setSelectedIds] = useState<string[]>(
         selectable?.selected || []
     )
+    const [disableAll, setDisableAll] = useState(false)
 
     const onLocalChange = (item: T): any => {
         const id = selectable!.mapper(item)
@@ -47,11 +48,23 @@ function Griddable<T>(props: GriddableProps<T>) {
     }
 
     useEffect(() => {
+        if (selectable) {
+            const ids = items.map(selectable.mapper);
+            const notFixed = ids.filter(el => fixedIds.current.indexOf(el) < 0)
+            setDisableAll(notFixed.length === 0)
+            setSelectedIds(selectable.selected || []);
+        } else {
+            setSelectedIds([]);
+        }
+    }, [selectable, items])
+
+    useEffect(() => {
         if (!selectable) return
 
         const selectedItems = items.filter((el) => {
-            return selectedIds.indexOf(selectable!.mapper(el))
+            return selectedIds.indexOf(selectable!.mapper(el)) >= 0
         })
+
         selectable.onChange(selectedIds, selectedItems)
     }, [selectable, items, selectedIds])
 
@@ -107,13 +120,14 @@ function Griddable<T>(props: GriddableProps<T>) {
     return (
         <Grid container>
             <Grid item xs={12}>
-                <GriddableRowHeader container>
+                <GriddableRowHeader className="GridableHeader" container>
                     {props.columns.map(
                         (column: GriddableColumn<T>, index: number) => (
                             <GriddableCellTitle
                                 key={index}
                                 column={column}
                                 selectable={selectable && index === 0}
+                                disabled={disableAll}
                                 total={items.length}
                                 selected={selectedIds}
                                 onChangeAll={onLocalChangeAll}

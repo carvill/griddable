@@ -48,8 +48,8 @@ function GriddableCellTitle(props) {
   (0, _react.useEffect)(function () {
     setChecked(selected.length > 0 && selected.length === total);
     setIndeterminate(selected.length > 0 && selected.length < total);
-    setDisabled(total === 0);
-  }, [total, selected]);
+    setDisabled(props.disabled || total === 0);
+  }, [total, selected, props.disabled]);
   (0, _react.useEffect)(function () {
     if (typeof title !== 'string') {
       setTitleNode(title);
