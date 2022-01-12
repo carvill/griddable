@@ -16,12 +16,12 @@ function GriddableCellTitle<T>(props: GriddableCellTitleProps<T>) {
     const { title, textAlign } = column
 
     const [titleNode, setTitleNode] = useState<ReactNode>()
-    const [allChecked, setAllChecked] = useState(false)
+    const [checked, setChecked] = useState(false)
     const [indeterminate, setIndeterminate] = useState(false)
     const [disabled, setDisabled] = useState(false)
 
     useEffect(() => {
-        setAllChecked(selected.length > 0 && selected.length === total)
+        setChecked(selected.length > 0 && selected.length === total)
         setIndeterminate(selected.length > 0 && selected.length < total)
         setDisabled(total === 0)
     }, [total, selected])
@@ -61,7 +61,7 @@ function GriddableCellTitle<T>(props: GriddableCellTitleProps<T>) {
                         size="small"
                         id="gridable-all"
                         name="gridable-all"
-                        checked={allChecked}
+                        checked={checked}
                         indeterminate={indeterminate}
                         onChange={handleAllCheckboxs}
                         disabled={disabled}

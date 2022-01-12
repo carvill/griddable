@@ -54,7 +54,7 @@ function GriddableCellValue<T>(props: GriddableCellValueProps<T>) {
         }
     }, [item, index, title, textAlign, converter])
 
-    const handleSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSelection = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
         props.onChange(item)
     }
 

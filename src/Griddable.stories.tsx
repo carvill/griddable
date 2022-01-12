@@ -100,14 +100,18 @@ Default.args = {
         },
     ] as GriddableColumn<Item>[],
     loading: false,
-    selectable: true,
-    selected: ['1', '2'],
-    fixed: ['1'],
-    mapper: (item: Item) => item.id,
-    onChange: (ids: string[], items: Item[]) => console.log(ids),
-    onClick: (item: Item) => {
-        console.log('here', item)
+    selectable: {
+        selected: ['1', '2'],
+        fixed: ['1'],
+        mapper: (item: Item) => item.id,
+        onChange: (ids: string[], items: Item[]) => console.log(ids),
     },
-    expandable: false,
-    detailMapper: (item: Item) => <span>Detail: {item.name}</span>,
+    clickable: {
+        onClick: (item: Item) => {
+            console.log('here', item)
+        },
+    },
+    expandable: {
+        mapper: (item: Item) => <span>Detail: {item.name}</span>,
+    },
 }

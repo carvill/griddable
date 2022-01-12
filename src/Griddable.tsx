@@ -1,10 +1,17 @@
-import React, { ReactNode, useEffect, useState } from 'react'
-import { Grid, CircularProgress, Typography } from '@material-ui/core'
+import React, { useEffect, useState, useRef } from 'react'
+import {
+    Grid,
+    CircularProgress,
+    Typography,
+} from '@material-ui/core'
 import GriddableRowHeader from './GriddableRowHeader'
 import GriddableRowGeneric from './GriddableRowGeneric'
 import GriddableColumn from './GriddableColumn'
 import GriddableCell from './GriddableCell'
 import GriddableRowBody from './GriddableRowBody'
+import GriddableSelectable from './GriddableSelectable'
+import GriddableExpandable from './GriddableExpandable'
+import GriddableClickable from './GriddableClickable'
 
 interface GriddableProps<T> {
     items: T[]
@@ -12,62 +19,45 @@ interface GriddableProps<T> {
     loading: boolean
     empty?: string
     error?: string
-    selectable?: boolean
-    selected?: string[]
-    fixed?: string[]
-    expandable?: boolean
-    onChange?(ids: string[], items: T[]): any
-    onClick?(item: T): any
-    mapper?(item: T): string
-    detailMapper?(item: T): ReactNode
+    selectable?: GriddableSelectable<T>
+    expandable?: GriddableExpandable<T>
+    clickable?: GriddableClickable<T>
 }
 
 function Griddable<T>(props: GriddableProps<T>) {
-    const [selectedIds, setSelectedIds] = useState<string[]>(props.selected || [])
-    const [fixedIds] = useState<string[]>(props.fixed || [])
-    const [selectedItems, setSelectedItems] = useState<T[]>([])
-    const { selectable, onChange, onClick, mapper } = props
+    const { clickable, expandable, selectable, items } = props
+
+    const fixedIds = useRef(selectable?.fixed || [])
+    const [selectedIds, setSelectedIds] = useState<string[]>(
+        selectable?.selected || []
+    )
 
     const onLocalChange = (item: T): any => {
-        const id = mapper!(item)
-        const ids =
-            selectedIds.length === 0
-                ? ([] as string[])
-                : selectedIds.join(',').split(',')
-        const items = selectedItems.map((item) => item)
-
+        const id = selectable!.mapper(item)
         const index = selectedIds.indexOf(id)
         if (index < 0) {
-            ids.push(id)
-            items.push(item)
+            setSelectedIds([...selectedIds, id])
         } else {
-            ids.splice(index, 1)
-            items.splice(index, 1)
+            setSelectedIds(selectedIds.filter((el, i) => i !== index))
         }
-
-        setSelectedIds(ids)
-        setSelectedItems(items)
     }
 
     const onLocalChangeAll = (checked: boolean): any => {
-        var ids: string[], items: T[]
         if (checked) {
-            ids = props.items.map((item) => mapper!(item))
-            items = props.items
+            setSelectedIds(items.map((item) => selectable!.mapper(item)))
         } else {
-            ids = fixedIds
-            items = props.items.filter(item => fixedIds.indexOf(mapper!(item)) >= 0)
+            setSelectedIds(fixedIds.current)
         }
-
-        setSelectedIds(ids)
-        setSelectedItems(items)
     }
 
     useEffect(() => {
-        if (selectable && onChange) {
-            onChange(selectedIds, selectedItems)
-        }
-    }, [selectable, onChange, selectedIds, selectedItems])
+        if (!selectable) return
+
+        const selectedItems = items.filter((el) => {
+            return selectedIds.indexOf(selectable!.mapper(el))
+        })
+        selectable.onChange(selectedIds, selectedItems)
+    }, [selectable, items, selectedIds])
 
     const gridableBody = (): any => {
         if (props.loading) {
@@ -88,7 +78,7 @@ function Griddable<T>(props: GriddableProps<T>) {
             )
         }
 
-        if (props.items.length === 0 && props.empty) {
+        if (items.length === 0 && props.empty) {
             return (
                 <GriddableRowGeneric>
                     <Typography variant="caption">{props.empty}</Typography>
@@ -98,21 +88,21 @@ function Griddable<T>(props: GriddableProps<T>) {
 
         return (
             <Grid item xs={12}>
-                {props.items.map((item: T, indexRow: number) => (
+                {items.map((item: T, indexRow: number) => (
                     <GriddableRowBody
                         key={indexRow}
                         item={item}
-                        total={props.items.length}
-                        selectable={props.selectable}
-                        fixedIds={fixedIds}
-                        expandable={props.expandable}
+                        total={items.length}
                         columns={props.columns}
-                        selectedIds={selectedIds}
                         onLocalChange={onLocalChange}
                         onLocalChangeAll={onLocalChangeAll}
-                        onClick={onClick}
-                        mapper={mapper}
-                        detailMapper={props.detailMapper}
+                        onClick={clickable?.onClick}
+                        selectedIds={selectedIds}
+                        fixedIds={fixedIds.current}
+                        selectable={!!selectable}
+                        mapper={selectable?.mapper}
+                        expandable={!!expandable}
+                        detailMapper={expandable?.mapper}
                     />
                 ))}
             </Grid>
@@ -130,8 +120,8 @@ function Griddable<T>(props: GriddableProps<T>) {
                                 column={column}
                                 index={index}
                                 selectable={selectable && index === 0}
-                                mapper={mapper}
-                                total={props.items.length}
+                                mapper={selectable?.mapper}
+                                total={items.length}
                                 selected={selectedIds}
                                 onChange={onLocalChange}
                                 onChangeAll={onLocalChangeAll}
