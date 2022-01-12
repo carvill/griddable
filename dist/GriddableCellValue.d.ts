@@ -3,13 +3,14 @@ import GriddableColumn from './GriddableColumn';
 interface GriddableCellValueProps<T> {
     column: GriddableColumn<T>;
     item: T;
+    id: string;
     index: number;
-    selected: string[];
+    selected?: boolean;
+    disabled?: boolean;
     selectable?: boolean;
+    onChange(item: T): any;
     expandable?: boolean;
     expanded?: boolean;
-    mapper?(item: T): string;
-    onChange(item: T): any;
     onExpand?(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): any;
 }
 declare function GriddableCellValue<T>(props: GriddableCellValueProps<T>): JSX.Element;

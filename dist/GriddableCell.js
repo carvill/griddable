@@ -11,27 +11,7 @@ var _core = require("@material-ui/core");
 
 var _styles = require("@material-ui/core/styles");
 
-var _GriddableCellTitle = _interopRequireDefault(require("./GriddableCellTitle"));
-
-var _GriddableCellValue = _interopRequireDefault(require("./GriddableCellValue"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __assign = void 0 && (void 0).__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
 
 var GriddableCellBox = (0, _styles.withStyles)(function (theme) {
   return {
@@ -50,8 +30,8 @@ var GriddableCellBox = (0, _styles.withStyles)(function (theme) {
 })(_core.Box);
 
 function GriddableCell(props) {
-  var item = props.item,
-      column = props.column;
+  var column = props.column,
+      children = props.children;
   return /*#__PURE__*/_react.default.createElement(_core.Hidden, {
     xsDown: column.xs === false,
     smDown: column.sm === false,
@@ -65,9 +45,7 @@ function GriddableCell(props) {
     md: column.md,
     lg: column.lg,
     xl: column.xl
-  }, /*#__PURE__*/_react.default.createElement(GriddableCellBox, null, item && /*#__PURE__*/_react.default.createElement(_GriddableCellValue.default, __assign({
-    item: item
-  }, props)), !item && /*#__PURE__*/_react.default.createElement(_GriddableCellTitle.default, __assign({}, props)))));
+  }, /*#__PURE__*/_react.default.createElement(GriddableCellBox, null, children)));
 }
 
 var _default = GriddableCell;

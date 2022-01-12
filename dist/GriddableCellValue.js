@@ -15,6 +15,8 @@ var _ExpandMore = _interopRequireDefault(require("@material-ui/icons/ExpandMore"
 
 var _GriddableCheckbox = _interopRequireDefault(require("./GriddableCheckbox"));
 
+var _GriddableCell = _interopRequireDefault(require("./GriddableCell"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -26,35 +28,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 function GriddableCellValue(props) {
   var column = props.column,
       item = props.item,
-      index = props.index,
+      id = props.id,
       selected = props.selected,
-      mapper = props.mapper;
+      disabled = props.disabled,
+      index = props.index,
+      onChange = props.onChange;
   var title = column.title,
       textAlign = column.textAlign,
       converter = column.converter;
 
-  var _a = (0, _react.useState)(''),
-      id = _a[0],
-      setId = _a[1];
+  var _a = (0, _react.useState)(),
+      valueNode = _a[0],
+      setValueNode = _a[1];
 
-  var _b = (0, _react.useState)(false),
-      checked = _b[0],
-      setChecked = _b[1];
-
-  var _c = (0, _react.useState)(),
-      valueNode = _c[0],
-      setValueNode = _c[1];
-
-  (0, _react.useEffect)(function () {
-    if (mapper) {
-      var id_1 = mapper(item);
-      setId(id_1);
-      setChecked(selected.indexOf(id_1) >= 0);
-    } else {
-      setId('');
-      setChecked(false);
-    }
-  }, [item, selected, mapper]);
   (0, _react.useEffect)(function () {
     var value = converter(item, index);
 
@@ -71,11 +57,13 @@ function GriddableCellValue(props) {
     }
   }, [item, index, title, textAlign, converter]);
 
-  var handleSelection = function handleSelection(event) {
-    props.onChange(item);
+  var handleSelection = function handleSelection(event, checked) {
+    onChange(item);
   };
 
-  return /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  return /*#__PURE__*/_react.default.createElement(_GriddableCell.default, {
+    column: column
+  }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
     container: true,
     justifyContent: "flex-start",
     alignItems: "center",
@@ -89,7 +77,8 @@ function GriddableCellValue(props) {
     id: id,
     name: id,
     value: id,
-    checked: checked,
+    checked: selected,
+    disabled: disabled,
     onChange: handleSelection,
     onClick: function onClick(event) {
       return event.stopPropagation();
@@ -107,7 +96,7 @@ function GriddableCellValue(props) {
   }))), /*#__PURE__*/_react.default.createElement(_core.Grid, {
     item: true,
     xs: true
-  }, valueNode));
+  }, valueNode)));
 }
 
 var _default = GriddableCellValue;

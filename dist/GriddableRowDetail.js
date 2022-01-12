@@ -27,7 +27,7 @@ var GriddableDetailContainer = (0, _styles.withStyles)(function (theme) {
 function GriddableRowDetail(props) {
   var item = props.item,
       expanded = props.expanded,
-      detailMapper = props.detailMapper;
+      mapper = props.mapper;
   return /*#__PURE__*/_react.default.createElement(_core.Hidden, {
     xsUp: !expanded,
     implementation: "js"
@@ -36,7 +36,7 @@ function GriddableRowDetail(props) {
     xs: 12
   }, /*#__PURE__*/_react.default.createElement(_core.Collapse, {
     in: expanded
-  }, detailMapper(item))));
+  }, mapper(item))));
 }
 
 var _default = GriddableRowDetail;

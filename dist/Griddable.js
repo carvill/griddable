@@ -15,9 +15,9 @@ var _GriddableRowHeader = _interopRequireDefault(require("./GriddableRowHeader")
 
 var _GriddableRowGeneric = _interopRequireDefault(require("./GriddableRowGeneric"));
 
-var _GriddableCell = _interopRequireDefault(require("./GriddableCell"));
-
 var _GriddableRowBody = _interopRequireDefault(require("./GriddableRowBody"));
+
+var _GriddableCellTitle = _interopRequireDefault(require("./GriddableCellTitle"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25,62 +25,55 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+var __spreadArray = void 0 && (void 0).__spreadArray || function (to, from) {
+  for (var i = 0, il = from.length, j = to.length; i < il; i++, j++) {
+    to[j] = from[i];
+  }
+
+  return to;
+};
+
 function Griddable(props) {
-  var _a = (0, _react.useState)([]),
+  var clickable = props.clickable,
+      expandable = props.expandable,
+      selectable = props.selectable,
+      items = props.items;
+  var fixedIds = (0, _react.useRef)((selectable === null || selectable === void 0 ? void 0 : selectable.fixed) || []);
+
+  var _a = (0, _react.useState)((selectable === null || selectable === void 0 ? void 0 : selectable.selected) || []),
       selectedIds = _a[0],
       setSelectedIds = _a[1];
 
-  var _b = (0, _react.useState)([]),
-      selectedItems = _b[0],
-      setSelectedItems = _b[1];
-
-  var selectable = props.selectable,
-      onChange = props.onChange,
-      onClick = props.onClick,
-      mapper = props.mapper;
-
   var onLocalChange = function onLocalChange(item) {
-    var id = mapper(item);
-    var ids = selectedIds.length === 0 ? [] : selectedIds.join(',').split(',');
-    var items = selectedItems.map(function (item) {
-      return item;
-    });
+    var id = selectable.mapper(item);
     var index = selectedIds.indexOf(id);
 
     if (index < 0) {
-      ids.push(id);
-      items.push(item);
+      setSelectedIds(__spreadArray(__spreadArray([], selectedIds), [id]));
     } else {
-      ids.splice(index, 1);
-      items.splice(index, 1);
+      setSelectedIds(selectedIds.filter(function (el, i) {
+        return i !== index;
+      }));
     }
-
-    setSelectedIds(ids);
-    setSelectedItems(items);
   };
 
   var onLocalChangeAll = function onLocalChangeAll(checked) {
-    var ids, items;
-
     if (checked) {
-      ids = props.items.map(function (item) {
-        return mapper(item);
-      });
-      items = props.items;
+      setSelectedIds(items.map(function (item) {
+        return selectable.mapper(item);
+      }));
     } else {
-      ids = [];
-      items = [];
+      setSelectedIds(fixedIds.current);
     }
-
-    setSelectedIds(ids);
-    setSelectedItems(items);
   };
 
   (0, _react.useEffect)(function () {
-    if (selectable && onChange) {
-      onChange(selectedIds, selectedItems);
-    }
-  }, [selectable, onChange, selectedIds, selectedItems]);
+    if (!selectable) return;
+    var selectedItems = items.filter(function (el) {
+      return selectedIds.indexOf(selectable.mapper(el));
+    });
+    selectable.onChange(selectedIds, selectedItems);
+  }, [selectable, items, selectedIds]);
 
   var gridableBody = function gridableBody() {
     if (props.loading) {
@@ -97,7 +90,7 @@ function Griddable(props) {
       }, props.error));
     }
 
-    if (props.items.length === 0 && props.empty) {
+    if (items.length === 0 && props.empty) {
       return /*#__PURE__*/_react.default.createElement(_GriddableRowGeneric.default, null, /*#__PURE__*/_react.default.createElement(_core.Typography, {
         variant: "caption"
       }, props.empty));
@@ -106,20 +99,20 @@ function Griddable(props) {
     return /*#__PURE__*/_react.default.createElement(_core.Grid, {
       item: true,
       xs: 12
-    }, props.items.map(function (item, indexRow) {
+    }, items.map(function (item, indexRow) {
       return /*#__PURE__*/_react.default.createElement(_GriddableRowBody.default, {
         key: indexRow,
         item: item,
-        total: props.items.length,
-        selectable: props.selectable,
-        expandable: props.expandable,
+        total: items.length,
         columns: props.columns,
-        selectedIds: selectedIds,
         onLocalChange: onLocalChange,
         onLocalChangeAll: onLocalChangeAll,
-        onClick: onClick,
-        mapper: mapper,
-        detailMapper: props.detailMapper
+        selectedIds: selectedIds,
+        fixedIds: fixedIds.current,
+        selectable: !!selectable,
+        mapper: selectable === null || selectable === void 0 ? void 0 : selectable.mapper,
+        clickable: clickable,
+        expandable: expandable
       });
     }));
   };
@@ -132,15 +125,12 @@ function Griddable(props) {
   }, /*#__PURE__*/_react.default.createElement(_GriddableRowHeader.default, {
     container: true
   }, props.columns.map(function (column, index) {
-    return /*#__PURE__*/_react.default.createElement(_GriddableCell.default, {
+    return /*#__PURE__*/_react.default.createElement(_GriddableCellTitle.default, {
       key: index,
       column: column,
-      index: index,
       selectable: selectable && index === 0,
-      mapper: mapper,
-      total: props.items.length,
+      total: items.length,
       selected: selectedIds,
-      onChange: onLocalChange,
       onChangeAll: onLocalChangeAll
     });
   }))), /*#__PURE__*/_react.default.createElement(_core.Grid, {

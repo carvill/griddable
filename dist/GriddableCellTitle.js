@@ -13,6 +13,8 @@ var _core = require("@material-ui/core");
 
 var _GriddableCheckbox = _interopRequireDefault(require("./GriddableCheckbox"));
 
+var _GriddableCell = _interopRequireDefault(require("./GriddableCell"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -32,8 +34,8 @@ function GriddableCellTitle(props) {
       setTitleNode = _a[1];
 
   var _b = (0, _react.useState)(false),
-      allChecked = _b[0],
-      setAllChecked = _b[1];
+      checked = _b[0],
+      setChecked = _b[1];
 
   var _c = (0, _react.useState)(false),
       indeterminate = _c[0],
@@ -44,7 +46,7 @@ function GriddableCellTitle(props) {
       setDisabled = _d[1];
 
   (0, _react.useEffect)(function () {
-    setAllChecked(selected.length > 0 && selected.length === total);
+    setChecked(selected.length > 0 && selected.length === total);
     setIndeterminate(selected.length > 0 && selected.length < total);
     setDisabled(total === 0);
   }, [total, selected]);
@@ -66,7 +68,9 @@ function GriddableCellTitle(props) {
     props.onChangeAll(checked);
   };
 
-  return /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  return /*#__PURE__*/_react.default.createElement(_GriddableCell.default, {
+    column: column
+  }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
     container: true,
     justifyContent: "flex-start",
     alignItems: "center",
@@ -79,14 +83,14 @@ function GriddableCellTitle(props) {
     size: "small",
     id: "gridable-all",
     name: "gridable-all",
-    checked: allChecked,
+    checked: checked,
     indeterminate: indeterminate,
     onChange: handleAllCheckboxs,
     disabled: disabled
   })), /*#__PURE__*/_react.default.createElement(_core.Grid, {
     item: true,
     xs: true
-  }, titleNode));
+  }, titleNode)));
 }
 
 var _default = GriddableCellTitle;
