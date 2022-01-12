@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Grid, CircularProgress, Typography } from '@material-ui/core'
 import GriddableRowHeader from './GriddableRowHeader'
 import GriddableRowGeneric from './GriddableRowGeneric'
@@ -23,50 +23,53 @@ interface GriddableProps<T> {
 function Griddable<T>(props: GriddableProps<T>) {
     const { clickable, expandable, selectable, items } = props
 
-    const fixedIds = useRef(selectable?.fixed || [])
-    const [selectedIds, setSelectedIds] = useState<string[]>(
-        selectable?.selected || []
-    )
     const [disableAll, setDisableAll] = useState(false)
 
     const onLocalChange = (item: T): any => {
         const id = selectable!.mapper(item)
-        const index = selectedIds.indexOf(id)
+        const index = selectable!.selected.indexOf(id)
+        let ids: string[]
         if (index < 0) {
-            setSelectedIds([...selectedIds, id])
+            ids = [...selectable!.selected, id]
         } else {
-            setSelectedIds(selectedIds.filter((el, i) => i !== index))
+            ids = selectable!.selected.filter((el, i) => i !== index)
         }
+
+        inform(ids)
     }
 
     const onLocalChangeAll = (checked: boolean): any => {
+        let ids: string[]
         if (checked) {
-            setSelectedIds(items.map((item) => selectable!.mapper(item)))
+            ids = items.map((item) => selectable!.mapper(item))
         } else {
-            setSelectedIds(fixedIds.current)
+            ids = selectable!.fixed || []
         }
+
+        inform(ids)
+    }
+
+    const inform = (ids: string[]) => {
+        if (!selectable) return
+
+        const selectedItems = items.filter((el) => {
+            return ids.indexOf(selectable!.mapper(el)) >= 0
+        })
+
+        selectable.onChange(ids, selectedItems)
     }
 
     useEffect(() => {
         if (selectable) {
-            const ids = items.map(selectable.mapper);
-            const notFixed = ids.filter(el => fixedIds.current.indexOf(el) < 0)
+            const ids = items.map(selectable.mapper)
+            const notFixed = selectable.fixed
+                ? ids.filter((el) => selectable!.fixed!.indexOf(el) < 0)
+                : []
             setDisableAll(notFixed.length === 0)
-            setSelectedIds(selectable.selected || []);
         } else {
-            setSelectedIds([]);
+            setDisableAll(false)
         }
     }, [selectable, items])
-
-    useEffect(() => {
-        if (!selectable) return
-
-        const selectedItems = items.filter((el) => {
-            return selectedIds.indexOf(selectable!.mapper(el)) >= 0
-        })
-
-        selectable.onChange(selectedIds, selectedItems)
-    }, [selectable, items, selectedIds])
 
     const gridableBody = (): any => {
         if (props.loading) {
@@ -105,9 +108,9 @@ function Griddable<T>(props: GriddableProps<T>) {
                         columns={props.columns}
                         onLocalChange={onLocalChange}
                         onLocalChangeAll={onLocalChangeAll}
-                        selectedIds={selectedIds}
-                        fixedIds={fixedIds.current}
                         selectable={!!selectable}
+                        selectedIds={selectable?.selected || []}
+                        fixedIds={selectable?.fixed || []}
                         mapper={selectable?.mapper}
                         clickable={clickable}
                         expandable={expandable}
@@ -129,7 +132,7 @@ function Griddable<T>(props: GriddableProps<T>) {
                                 selectable={selectable && index === 0}
                                 disabled={disableAll}
                                 total={items.length}
-                                selected={selectedIds}
+                                selected={selectable?.selected || []}
                                 onChangeAll={onLocalChangeAll}
                             />
                         )
