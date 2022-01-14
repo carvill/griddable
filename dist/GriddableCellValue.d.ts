@@ -4,7 +4,8 @@ interface GriddableCellValueProps<T> {
     column: GriddableColumn<T>;
     item: T;
     id: string;
-    index: number;
+    indexRow: number;
+    indexColumn: number;
     selected?: boolean;
     disabled?: boolean;
     selectable?: boolean;

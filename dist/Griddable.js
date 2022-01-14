@@ -120,6 +120,7 @@ function Griddable(props) {
     }, items.map(function (item, indexRow) {
       return /*#__PURE__*/_react.default.createElement(_GriddableRowBody.default, {
         key: indexRow,
+        index: indexRow,
         item: item,
         total: items.length,
         columns: props.columns,

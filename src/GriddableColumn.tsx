@@ -19,7 +19,11 @@ type columns =
 
 interface GriddableColumn<T> {
     title: string | ReactNode
-    converter(item: T, index: number): string | number | ReactNode
+    converter(
+        item: T,
+        index: number,
+        indexRow?: number
+    ): string | number | ReactNode
     textAlign?: PropTypes.Alignment
     xs?: columns
     sm?: columns

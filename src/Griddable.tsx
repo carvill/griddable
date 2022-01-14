@@ -103,6 +103,7 @@ function Griddable<T>(props: GriddableProps<T>) {
                 {items.map((item: T, indexRow: number) => (
                     <GriddableRowBody
                         key={indexRow}
+                        index={indexRow}
                         item={item}
                         total={items.length}
                         columns={props.columns}

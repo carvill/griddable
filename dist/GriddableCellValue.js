@@ -31,7 +31,8 @@ function GriddableCellValue(props) {
       id = props.id,
       selected = props.selected,
       disabled = props.disabled,
-      index = props.index,
+      indexColumn = props.indexColumn,
+      indexRow = props.indexRow,
       onChange = props.onChange;
   var title = column.title,
       textAlign = column.textAlign,
@@ -42,7 +43,7 @@ function GriddableCellValue(props) {
       setValueNode = _a[1];
 
   (0, _react.useEffect)(function () {
-    var value = converter(item, index);
+    var value = converter(item, indexColumn, indexRow);
 
     var type = _typeof(value);
 
@@ -55,7 +56,7 @@ function GriddableCellValue(props) {
     } else {
       setValueNode(value);
     }
-  }, [item, index, title, textAlign, converter]);
+  }, [item, indexColumn, indexRow, title, textAlign, converter]);
 
   var handleSelection = function handleSelection(event, checked) {
     onChange(item);

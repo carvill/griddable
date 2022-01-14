@@ -3,7 +3,7 @@ import { PropTypes } from '@material-ui/core';
 declare type columns = boolean | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'auto';
 interface GriddableColumn<T> {
     title: string | ReactNode;
-    converter(item: T, index: number): string | number | ReactNode;
+    converter(item: T, index: number, indexRow?: number): string | number | ReactNode;
     textAlign?: PropTypes.Alignment;
     xs?: columns;
     sm?: columns;

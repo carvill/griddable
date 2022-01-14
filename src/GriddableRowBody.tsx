@@ -9,6 +9,7 @@ import GriddableClickable from './GriddableClickable'
 import GriddableCellValue from './GriddableCellValue'
 
 interface GriddableRowBodyProps<T> {
+    index: number
     item: T
     total: number
     selectable?: boolean
@@ -24,6 +25,7 @@ interface GriddableRowBodyProps<T> {
 
 function GriddableRowBody<T>(props: GriddableRowBodyProps<T>) {
     const {
+        index,
         item,
         selectable,
         clickable,
@@ -75,7 +77,8 @@ function GriddableRowBody<T>(props: GriddableRowBodyProps<T>) {
                             id={id}
                             column={column}
                             item={item}
-                            index={indexColumn}
+                            indexRow={index}
+                            indexColumn={indexColumn}
                             selected={selected}
                             selectable={selectable && indexColumn === 0}
                             disabled={disabled}

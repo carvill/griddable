@@ -3,6 +3,7 @@ import GriddableColumn from './GriddableColumn';
 import GriddableExpandable from './GriddableExpandable';
 import GriddableClickable from './GriddableClickable';
 interface GriddableRowBodyProps<T> {
+    index: number;
     item: T;
     total: number;
     selectable?: boolean;

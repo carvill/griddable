@@ -10,7 +10,8 @@ interface GriddableCellValueProps<T> {
     column: GriddableColumn<T>
     item: T
     id: string
-    index: number
+    indexRow: number
+    indexColumn: number
 
     selected?: boolean
     disabled?: boolean
@@ -23,13 +24,22 @@ interface GriddableCellValueProps<T> {
 }
 
 function GriddableCellValue<T>(props: GriddableCellValueProps<T>) {
-    const { column, item, id, selected, disabled, index, onChange } = props
+    const {
+        column,
+        item,
+        id,
+        selected,
+        disabled,
+        indexColumn,
+        indexRow,
+        onChange,
+    } = props
     const { title, textAlign, converter } = column
 
     const [valueNode, setValueNode] = useState<ReactNode>()
 
     useEffect(() => {
-        const value = converter(item, index)
+        const value = converter(item, indexColumn, indexRow)
         const type = typeof value
         if (textAlign && (type === 'string' || type === 'number')) {
             setValueNode(
@@ -40,7 +50,7 @@ function GriddableCellValue<T>(props: GriddableCellValueProps<T>) {
         } else {
             setValueNode(value)
         }
-    }, [item, index, title, textAlign, converter])
+    }, [item, indexColumn, indexRow, title, textAlign, converter])
 
     const handleSelection = (
         event: React.ChangeEvent<HTMLInputElement>,
