@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import GriddableCheckbox from './GriddableCheckbox'
 import GriddableColumn from './GriddableColumn'
 import GriddableCell from './GriddableCell'

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid } from '@mui/material'
 import GriddableRow from './GriddableRow'
 
 interface GriddableRowGenericProps {

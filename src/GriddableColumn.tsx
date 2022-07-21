@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
-import { PropTypes } from '@material-ui/core'
+import { PropTypes } from '@mui/material'
+import { SystemProps } from '@mui/system'
 
 type columns =
     | boolean
@@ -17,6 +18,8 @@ type columns =
     | 12
     | 'auto'
 
+type align = 'inherit' | 'left' | 'center' | 'right' | 'justify'
+
 interface GriddableColumn<T> {
     title: string | ReactNode
     converter(
@@ -24,7 +27,7 @@ interface GriddableColumn<T> {
         index: number,
         indexRow?: number
     ): string | number | ReactNode
-    textAlign?: PropTypes.Alignment
+    textAlign?: align
     xs?: columns
     sm?: columns
     md?: columns

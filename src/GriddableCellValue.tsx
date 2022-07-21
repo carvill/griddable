@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react'
-import { Grid, Typography, IconButton } from '@material-ui/core'
-import ExpandLess from '@material-ui/icons/ExpandLess'
-import ExpandMore from '@material-ui/icons/ExpandMore'
+import { Grid, Typography, IconButton, Checkbox } from '@mui/material'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
 import GriddableColumn from './GriddableColumn'
 import GriddableCheckbox from './GriddableCheckbox'
 import GriddableCell from './GriddableCell'
@@ -78,7 +78,6 @@ function GriddableCellValue<T>(props: GriddableCellValueProps<T>) {
                             checked={selected}
                             disabled={disabled}
                             onChange={handleSelection}
-                            onClick={(event) => event.stopPropagation()}
                         />
                     </Grid>
                 )}

@@ -1,10 +1,8 @@
-import { Theme, withStyles } from '@material-ui/core/styles'
+import { styled } from '@mui/material/styles'
 import GriddableRow from './GriddableRow'
 
-const GriddableRowHeader = withStyles((theme: Theme) => ({
-    root: {
-        backgroundColor: theme.palette.grey[100],
-    },
-}))(GriddableRow)
+const GriddableRowHeader = styled(GriddableRow)(({ theme }) => ({
+    backgroundColor: theme.palette.grey[100],
+}))
 
 export default GriddableRowHeader

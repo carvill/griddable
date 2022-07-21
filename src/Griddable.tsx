@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, CircularProgress, Typography } from '@material-ui/core'
+import { Grid, CircularProgress, Typography } from '@mui/material'
 import GriddableRowHeader from './GriddableRowHeader'
 import GriddableRowGeneric from './GriddableRowGeneric'
 import GriddableColumn from './GriddableColumn'

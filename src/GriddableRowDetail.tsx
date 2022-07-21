@@ -1,15 +1,13 @@
 import React, { ReactNode } from 'react'
-import { Collapse, Grid, Hidden } from '@material-ui/core'
-import { Theme, withStyles } from '@material-ui/core/styles'
+import { Collapse, Grid, Hidden } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
-const GriddableDetailContainer = withStyles((theme: Theme) => ({
-    root: {
-        borderTop: '1px dashed',
-        borderTopColor: theme.palette.divider,
-        padding: theme.spacing(1.5),
-        marginTop: theme.spacing(0.5),
-    },
-}))(Grid)
+const GriddableDetailContainer = styled(Grid)(({ theme }) => ({
+    borderTop: '1px dashed',
+    borderTopColor: theme.palette.divider,
+    padding: theme.spacing(1.5),
+    marginTop: theme.spacing(0.5),
+}))
 
 interface GriddableRowDetailProps<T> {
     item: T

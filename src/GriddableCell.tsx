@@ -1,21 +1,19 @@
 import React, { ReactNode } from 'react'
-import { Grid, Box, Hidden } from '@material-ui/core'
-import { Theme, withStyles } from '@material-ui/core/styles'
+import { Grid, Box, Hidden } from '@mui/material'
 import GriddableColumn from './GriddableColumn'
+import { styled } from '@mui/material/styles'
 
-const GriddableCellBox = withStyles((theme: Theme) => ({
-    root: {
-        width: '100%',
-        minWidth: '100%',
-        minHeight: theme.spacing(5),
-        paddingLeft: theme.spacing(1.5),
-        paddingRight: theme.spacing(1.5),
-        display: 'flex',
-        alignItems: 'center',
-        boxSizing: 'border-box',
-        justifyContent: 'flex-start',
-    },
-}))(Box)
+const GriddableCellBox = styled(Box)(({ theme }) => ({
+    width: '100%',
+    minWidth: '100%',
+    minHeight: theme.spacing(5),
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1.5),
+    display: 'flex',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+    justifyContent: 'flex-start',
+}))
 
 interface GriddableCellProps<T> {
     column: GriddableColumn<T>
