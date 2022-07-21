@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react'
-import { Grid, Typography, IconButton, Checkbox } from '@mui/material'
+import { Grid, Typography, IconButton } from '@mui/material'
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import GriddableColumn from './GriddableColumn'

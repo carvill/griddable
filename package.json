@@ -1,6 +1,6 @@
 {
   "name": "griddable",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "main": "dist/index",
   "typings": "dist/index",
@@ -13,8 +13,7 @@
     "type": "git",
     "url": "https://github.com/carvill/griddable"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "peerDependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.18.9",

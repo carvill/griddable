@@ -1,6 +1,4 @@
 import { ReactNode } from 'react'
-import { PropTypes } from '@mui/material'
-import { SystemProps } from '@mui/system'
 
 type columns =
     | boolean
