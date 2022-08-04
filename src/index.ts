@@ -1,5 +1,4 @@
-import Griddable from './Griddable'
-import GriddableColumn from './GriddableColumn'
+import Griddable, { GriddableColumn } from './Griddable'
 
 export default {
     Griddable,
