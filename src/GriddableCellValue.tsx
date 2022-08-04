@@ -41,7 +41,7 @@ function GriddableCellValue<T>(props: GriddableCellValueProps<T>) {
     useEffect(() => {
         const value = converter(item, indexColumn, indexRow)
         const type = typeof value
-        if (textAlign && (type === 'string' || type === 'number')) {
+        if (type === 'string' || type === 'number') {
             setValueNode(
                 <Typography variant="body2" component="h6" align={textAlign}>
                     {value}

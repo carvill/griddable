@@ -9,7 +9,7 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _core = require("@material-ui/core");
+var _material = require("@mui/material");
 
 var _GriddableRowHeader = _interopRequireDefault(require("./GriddableRowHeader"));
 
@@ -25,12 +25,14 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var __spreadArray = void 0 && (void 0).__spreadArray || function (to, from) {
-  for (var i = 0, il = from.length, j = to.length; i < il; i++, j++) {
-    to[j] = from[i];
+var __spreadArray = void 0 && (void 0).__spreadArray || function (to, from, pack) {
+  if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+    if (ar || !(i in from)) {
+      if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+      ar[i] = from[i];
+    }
   }
-
-  return to;
+  return to.concat(ar || Array.prototype.slice.call(from));
 };
 
 function Griddable(props) {
@@ -49,7 +51,7 @@ function Griddable(props) {
     var ids;
 
     if (index < 0) {
-      ids = __spreadArray(__spreadArray([], selectable.selected), [id]);
+      ids = __spreadArray(__spreadArray([], selectable.selected, true), [id], false);
     } else {
       ids = selectable.selected.filter(function (el, i) {
         return i !== index;
@@ -95,26 +97,26 @@ function Griddable(props) {
 
   var gridableBody = function gridableBody() {
     if (props.loading) {
-      return /*#__PURE__*/_react.default.createElement(_GriddableRowGeneric.default, null, /*#__PURE__*/_react.default.createElement(_core.CircularProgress, {
+      return /*#__PURE__*/_react.default.createElement(_GriddableRowGeneric.default, null, /*#__PURE__*/_react.default.createElement(_material.CircularProgress, {
         size: "1rem",
         color: "secondary"
       }));
     }
 
     if (props.error) {
-      return /*#__PURE__*/_react.default.createElement(_GriddableRowGeneric.default, null, /*#__PURE__*/_react.default.createElement(_core.Typography, {
+      return /*#__PURE__*/_react.default.createElement(_GriddableRowGeneric.default, null, /*#__PURE__*/_react.default.createElement(_material.Typography, {
         variant: "caption",
         color: "error"
       }, props.error));
     }
 
     if (items.length === 0 && props.empty) {
-      return /*#__PURE__*/_react.default.createElement(_GriddableRowGeneric.default, null, /*#__PURE__*/_react.default.createElement(_core.Typography, {
+      return /*#__PURE__*/_react.default.createElement(_GriddableRowGeneric.default, null, /*#__PURE__*/_react.default.createElement(_material.Typography, {
         variant: "caption"
       }, props.empty));
     }
 
-    return /*#__PURE__*/_react.default.createElement(_core.Grid, {
+    return /*#__PURE__*/_react.default.createElement(_material.Grid, {
       item: true,
       xs: 12
     }, items.map(function (item, indexRow) {
@@ -136,9 +138,9 @@ function Griddable(props) {
     }));
   };
 
-  return /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  return /*#__PURE__*/_react.default.createElement(_material.Grid, {
     container: true
-  }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  }, /*#__PURE__*/_react.default.createElement(_material.Grid, {
     item: true,
     xs: 12
   }, /*#__PURE__*/_react.default.createElement(_GriddableRowHeader.default, {
@@ -154,7 +156,7 @@ function Griddable(props) {
       selected: (selectable === null || selectable === void 0 ? void 0 : selectable.selected) || [],
       onChangeAll: onLocalChangeAll
     });
-  }))), /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  }))), /*#__PURE__*/_react.default.createElement(_material.Grid, {
     item: true,
     xs: 12
   }, gridableBody()));

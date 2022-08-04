@@ -9,7 +9,7 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _core = require("@material-ui/core");
+var _material = require("@mui/material");
 
 var _GriddableCheckbox = _interopRequireDefault(require("./GriddableCheckbox"));
 
@@ -53,14 +53,12 @@ function GriddableCellTitle(props) {
   (0, _react.useEffect)(function () {
     if (typeof title !== 'string') {
       setTitleNode(title);
-    } else if (textAlign) {
-      setTitleNode( /*#__PURE__*/_react.default.createElement(_core.Typography, {
+    } else {
+      setTitleNode( /*#__PURE__*/_react.default.createElement(_material.Typography, {
         variant: "body2",
         component: "h6",
         align: textAlign
       }, /*#__PURE__*/_react.default.createElement("strong", null, title)));
-    } else {
-      setTitleNode( /*#__PURE__*/_react.default.createElement("strong", null, title));
     }
   }, [title, textAlign]);
 
@@ -70,13 +68,13 @@ function GriddableCellTitle(props) {
 
   return /*#__PURE__*/_react.default.createElement(_GriddableCell.default, {
     column: column
-  }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  }, /*#__PURE__*/_react.default.createElement(_material.Grid, {
     container: true,
     justifyContent: "flex-start",
     alignItems: "center",
     alignContent: "center",
     spacing: 1
-  }, selectable && /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  }, selectable && /*#__PURE__*/_react.default.createElement(_material.Grid, {
     item: true,
     xs: "auto"
   }, /*#__PURE__*/_react.default.createElement(_GriddableCheckbox.default, {
@@ -87,7 +85,7 @@ function GriddableCellTitle(props) {
     indeterminate: indeterminate,
     onChange: handleAllCheckboxs,
     disabled: disabled
-  })), /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  })), /*#__PURE__*/_react.default.createElement(_material.Grid, {
     item: true,
     xs: true
   }, titleNode)));

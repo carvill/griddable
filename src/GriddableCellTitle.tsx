@@ -31,14 +31,12 @@ function GriddableCellTitle<T>(props: GriddableCellTitleProps<T>) {
     useEffect(() => {
         if (typeof title !== 'string') {
             setTitleNode(title)
-        } else if (textAlign) {
+        } else {
             setTitleNode(
                 <Typography variant="body2" component="h6" align={textAlign}>
                     <strong>{title}</strong>
                 </Typography>
             )
-        } else {
-            setTitleNode(<strong>{title}</strong>)
         }
     }, [title, textAlign])
 

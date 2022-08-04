@@ -7,34 +7,33 @@ exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _core = require("@material-ui/core");
+var _material = require("@mui/material");
 
-var _styles = require("@material-ui/core/styles");
+var _styles = require("@mui/material/styles");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var GriddableDetailContainer = (0, _styles.withStyles)(function (theme) {
+var GriddableDetailContainer = (0, _styles.styled)(_material.Grid)(function (_a) {
+  var theme = _a.theme;
   return {
-    root: {
-      borderTop: '1px dashed',
-      borderTopColor: theme.palette.divider,
-      padding: theme.spacing(1.5),
-      marginTop: theme.spacing(0.5)
-    }
+    borderTop: '1px dashed',
+    borderTopColor: theme.palette.divider,
+    padding: theme.spacing(1.5),
+    marginTop: theme.spacing(0.5)
   };
-})(_core.Grid);
+});
 
 function GriddableRowDetail(props) {
   var item = props.item,
       expanded = props.expanded,
       mapper = props.mapper;
-  return /*#__PURE__*/_react.default.createElement(_core.Hidden, {
+  return /*#__PURE__*/_react.default.createElement(_material.Hidden, {
     xsUp: !expanded,
     implementation: "js"
   }, /*#__PURE__*/_react.default.createElement(GriddableDetailContainer, {
     item: true,
     xs: 12
-  }, /*#__PURE__*/_react.default.createElement(_core.Collapse, {
+  }, /*#__PURE__*/_react.default.createElement(_material.Collapse, {
     in: expanded
   }, mapper(item))));
 }

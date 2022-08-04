@@ -7,11 +7,11 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _core = require("@material-ui/core");
+var _material = require("@mui/material");
 
-var _ExpandLess = _interopRequireDefault(require("@material-ui/icons/ExpandLess"));
+var _ExpandLess = _interopRequireDefault(require("@mui/icons-material/ExpandLess"));
 
-var _ExpandMore = _interopRequireDefault(require("@material-ui/icons/ExpandMore"));
+var _ExpandMore = _interopRequireDefault(require("@mui/icons-material/ExpandMore"));
 
 var _GriddableCheckbox = _interopRequireDefault(require("./GriddableCheckbox"));
 
@@ -47,8 +47,8 @@ function GriddableCellValue(props) {
 
     var type = _typeof(value);
 
-    if (textAlign && (type === 'string' || type === 'number')) {
-      setValueNode( /*#__PURE__*/_react.default.createElement(_core.Typography, {
+    if (type === 'string' || type === 'number') {
+      setValueNode( /*#__PURE__*/_react.default.createElement(_material.Typography, {
         variant: "body2",
         component: "h6",
         align: textAlign
@@ -64,13 +64,13 @@ function GriddableCellValue(props) {
 
   return /*#__PURE__*/_react.default.createElement(_GriddableCell.default, {
     column: column
-  }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  }, /*#__PURE__*/_react.default.createElement(_material.Grid, {
     container: true,
     justifyContent: "flex-start",
     alignItems: "center",
     alignContent: "center",
     spacing: 1
-  }, props.selectable && /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  }, props.selectable && /*#__PURE__*/_react.default.createElement(_material.Grid, {
     item: true,
     xs: "auto"
   }, /*#__PURE__*/_react.default.createElement(_GriddableCheckbox.default, {
@@ -80,21 +80,18 @@ function GriddableCellValue(props) {
     value: id,
     checked: selected,
     disabled: disabled,
-    onChange: handleSelection,
-    onClick: function onClick(event) {
-      return event.stopPropagation();
-    }
-  })), props.expandable && /*#__PURE__*/_react.default.createElement(_core.Grid, {
+    onChange: handleSelection
+  })), props.expandable && /*#__PURE__*/_react.default.createElement(_material.Grid, {
     item: true,
     xs: "auto"
-  }, /*#__PURE__*/_react.default.createElement(_core.IconButton, {
+  }, /*#__PURE__*/_react.default.createElement(_material.IconButton, {
     size: "small",
     onClick: props.onExpand
   }, props.expanded ? /*#__PURE__*/_react.default.createElement(_ExpandLess.default, {
     fontSize: "small"
   }) : /*#__PURE__*/_react.default.createElement(_ExpandMore.default, {
     fontSize: "small"
-  }))), /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  }))), /*#__PURE__*/_react.default.createElement(_material.Grid, {
     item: true,
     xs: true
   }, valueNode)));

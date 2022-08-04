@@ -5,18 +5,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _core = require("@material-ui/core");
+var _material = require("@mui/material");
 
-var _styles = require("@material-ui/core/styles");
+var _styles = require("@mui/material/styles");
 
-var GriddableCheckbox = (0, _styles.withStyles)(function (theme) {
+var GriddableCheckbox = (0, _styles.styled)(_material.Checkbox)(function (_a) {
+  var theme = _a.theme;
   return {
-    root: {
-      paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1),
-      zIndex: 1
-    }
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+    zIndex: 1
   };
-})(_core.Checkbox);
+});
 var _default = GriddableCheckbox;
 exports.default = _default;
