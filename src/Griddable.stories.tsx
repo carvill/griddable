@@ -1,6 +1,5 @@
 import React from 'react'
-import Griddable, { GriddableProps } from './Griddable'
-import GriddableColumn from './GriddableColumn'
+import Griddable, { GriddableProps, GriddableColumn } from './Griddable'
 
 export default {
     title: ':: Griddable ::',
@@ -91,7 +90,8 @@ Default.args = {
             title: 'Unidades',
             converter: (item) => item.quantity,
             textAlign: 'right',
-            xs: 2,
+            xs: false,
+            md: 2,
         },
         {
             title: 'Estatus',
